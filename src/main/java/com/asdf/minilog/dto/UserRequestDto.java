@@ -7,6 +7,6 @@ import lombok.NonNull;
 @Data
 @Builder
 public class UserRequestDto {
-    @NonNull private Long id;
     @NonNull private String username;
+    @NonNull private String password;
 }
