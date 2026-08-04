@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Follower {
+public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
