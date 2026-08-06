@@ -64,4 +64,14 @@ public class UserService {
         var updatedUser = userRepository.save(user);
         return EntityDtoMapper.toDto(updatedUser);
     }
+
+    public void deleteUser(Long userId) {
+        User user =
+                userRepository
+                        .findById(userId)
+                        .orElseThrow(
+                                () -> new UserNotFoundException(
+                                        String.format("해당 아이디(%d)를 가진 사용자를 찾을 수 없습니다.", userId)));
+        userRepository.deleteById(user.getId());
+    }
 }
