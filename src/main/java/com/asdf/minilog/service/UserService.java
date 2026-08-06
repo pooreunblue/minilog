@@ -35,4 +35,18 @@ public class UserService {
     public Optional<UserResponseDto> getUserById(Long userId) {
         return userRepository.findById(userId).map(EntityDtoMapper::toDto);
     }
+
+    public UserResponseDto createdUser(UserRequestDto userRequestDto) {
+        if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 사용자 이름입니다.");
+        }
+
+        User savedUser =
+                userRepository.save(
+                        User.builder()
+                                .username(userRequestDto.getUsername())
+                                .password(userRequestDto.getPassword())
+                                .build());
+        return EntityDtoMapper.toDto(savedUser);
+    }
 }
