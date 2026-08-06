@@ -30,4 +30,9 @@ public class UserService {
                 .map(EntityDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public Optional<UserResponseDto> getUserById(Long userId) {
+        return userRepository.findById(userId).map(EntityDtoMapper::toDto);
+    }
 }
