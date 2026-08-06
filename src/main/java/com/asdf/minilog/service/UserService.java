@@ -3,6 +3,7 @@ package com.asdf.minilog.service;
 import com.asdf.minilog.dto.UserRequestDto;
 import com.asdf.minilog.dto.UserResponseDto;
 import com.asdf.minilog.entity.User;
+import com.asdf.minilog.exception.UserNotFoundException;
 import com.asdf.minilog.repository.UserRepository;
 import com.asdf.minilog.util.EntityDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,19 @@ public class UserService {
                                 .password(userRequestDto.getPassword())
                                 .build());
         return EntityDtoMapper.toDto(savedUser);
+    }
+
+    public UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto) {
+        User user =
+                userRepository
+                .findById(userId)
+                .orElseThrow(
+                        () -> new UserNotFoundException(
+                                String.format("해당 아이디(%d)를 가진 사용자를 찾을 수 없습니다.", userId)));
+        user.setUsername(userRequestDto.getUsername());
+        user.setPassword(userRequestDto.getPassword());
+
+        var updatedUser = userRepository.save(user);
+        return EntityDtoMapper.toDto(updatedUser);
     }
 }
