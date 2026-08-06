@@ -3,6 +3,7 @@ package com.asdf.minilog.service;
 import com.asdf.minilog.dto.ArticleResponseDto;
 import com.asdf.minilog.entity.Article;
 import com.asdf.minilog.entity.User;
+import com.asdf.minilog.exception.ArticleNotFoundException;
 import com.asdf.minilog.exception.UserNotFoundException;
 import com.asdf.minilog.repository.ArticleRepository;
 import com.asdf.minilog.repository.UserRepository;
@@ -35,5 +36,14 @@ public class ArticleService {
         Article article = Article.builder().content(content).author(user).build();
         Article savedArticle = articleRepository.save(article);
         return EntityDtoMapper.toDto(savedArticle);
+    }
+
+    public void deleteArticle(Long articleId) {
+        Article article = articleRepository
+                .findById(articleId)
+                .orElseThrow(
+                        () -> new ArticleNotFoundException(
+                                String.format("해당 아이디(%d)를 가진 게시글을 찾을 수 없습니다.", articleId)));
+        articleRepository.deleteById(articleId);
     }
 }
