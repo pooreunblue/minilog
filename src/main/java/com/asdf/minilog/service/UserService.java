@@ -23,4 +23,11 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> getUsers() {
+        return userRepository.findAll().stream()
+                .map(EntityDtoMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }
